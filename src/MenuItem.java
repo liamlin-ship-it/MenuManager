@@ -22,8 +22,9 @@ public class MenuItem {
     }
 
     public String getDetails(){
-        // 判斷中文名稱長度。如果字數小於6個字，
-        // 就多補一個 Tab 確保對齊
+        // Check the length of the item name.
+        // If it is less than 6 characters,
+        // append an extra tab to ensure proper alignment.
         String tab = name.length() < 6 ? "\t\t" : "\t";
         return id + "  " + name + tab + "$" + price;
     }
