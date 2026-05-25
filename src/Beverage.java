@@ -4,8 +4,8 @@ public class Beverage extends MenuItem {
 
     public Beverage(String id, String name, int price){
         super(id, name, price);
-        this.sugarLevel = "  　 甜度";
-        this.iceLevel = "冰塊";
+        this.sugarLevel = "  　 ice";
+        this.iceLevel = "sugar";
     }
 
     public void setCustomization(String sugar, String ice){
@@ -15,8 +15,8 @@ public class Beverage extends MenuItem {
 
     @Override
     public String getDetails(){
-        // 先取之前已經排版好的編號、名稱跟價格，
-        // 再加上甜度跟冰塊的字串
+        // Retrieve the pre-formatted ID, name, and price from the parent class,
+        // then append the sugar and ice level strings.
         return super.getDetails() + String.format("%s, %s", sugarLevel, iceLevel);
     }
 }
