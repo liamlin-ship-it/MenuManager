@@ -7,25 +7,26 @@ public class Order {
         this.items = new ArrayList<>();
     }
 
-    // 將餐點加入購物車
+    // Add the item to the order
     public void addItem(MenuItem item){
         items.add(item);
-        System.out.println("已加入: " + item.getName());
+        System.out.println("Added: " + item.getName());
     }
 
     public void removeItem(int index){
-        // 確保傳入的索引值大於等於 0，且小於清單目前的總長度
+        // Ensure the provided index is greater than or equal to 0,
+        // and less than the current size of the list.
         if (index >= 0 && index < items.size()){
             MenuItem removed = items.remove(index);
-            System.out.println("已移除: " + removed.getName());
+            System.out.println("Removed: " + removed.getName());
         }
     }
 
-    // 計算總金額
+    // Calculate the total price
     public int calculateTotal(){
         int total = 0;
         for (MenuItem item : items){
-            // 從 MenuItem 裡面拿每一個的價錢來加總
+            // Retrieve the price from each MenuItem and add it to the total
             total += item.getPrice();
         }
         return total;
@@ -35,7 +36,7 @@ public class Order {
         return items;
     }
 
-    // 結帳完成，準備服務下一位客人時呼叫
+    // Call this when checkout is complete, preparing to serve the next customer
     public void clear(){
         items.clear();
     }
