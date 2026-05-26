@@ -22,10 +22,7 @@ public class MenuItem {
     }
 
     public String getDetails(){
-        // Check the length of the item name.
-        // If it is less than 6 characters,
-        // append an extra tab to ensure proper alignment.
-        String tab = name.length() < 6 ? "\t\t" : "\t";
-        return id + "  " + name + tab + "$" + price;
+        // %-5s means a left-aligned string with 5 spaces
+        return String.format("%-5s %-20s %-8d", id, name, price);
     }
 }
