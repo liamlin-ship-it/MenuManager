@@ -4,8 +4,8 @@ public class Beverage extends MenuItem {
 
     public Beverage(String id, String name, int price){
         super(id, name, price);
-        this.sugarLevel = "  　 ice";
-        this.iceLevel = "sugar";
+        this.sugarLevel = "Regular Sugar";
+        this.iceLevel = "Regular Ice";
     }
 
     public void setCustomization(String sugar, String ice){
