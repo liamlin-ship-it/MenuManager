@@ -8,19 +8,19 @@ public class Main {
         ArrayList<MenuItem> menu = new ArrayList<>();
         Order currentOrder = new Order();
 
-        // 初始化寫死的菜單
+        // Initialize the hardcoded menu
         initializeMenu(menu);
 
         boolean running = true;
         while (running) {
             System.out.println("\n========== Java Cafe ==========");
-            System.out.println("本店每人低消 $150 元!");
-            System.out.println("1. 查看菜單");
-            System.out.println("2. 開始點餐");
-            System.out.println("3. 取消餐點");
-            System.out.println("4. 結帳付款");
-            System.out.println("0. 離開系統");
-            System.out.print("請輸入選項: ");
+            System.out.println("Minimum order is $150 per person!");
+            System.out.println("1. View Menu");
+            System.out.println("2. Order Items");
+            System.out.println("3. Cancel Items");
+            System.out.println("4. Checkout");
+            System.out.println("0. Exit System");
+            System.out.print("Please enter your choice: ");
 
             String choice = scanner.nextLine();
 
@@ -39,44 +39,44 @@ public class Main {
 
                 case "4":
                     boolean isCheckedOut = checkout(scanner, currentOrder);
-                    // 如果結帳成功，清空購物車，並可以選擇是否繼續服務下一組客人
+                    // If checkout is successful, clear the cart and prepare for the next customer
                     if (isCheckedOut) {
                         currentOrder.clear();
-                        System.out.println("\n準備迎接下一組顧客");
+                        System.out.println("\nPreparing for the next customer...");
                     }
                     break;
 
                 case "0":
-                    System.out.println("感謝您的使用，系統已關閉！");
+                    System.out.println("Thank you for using the system. The system is now closed!");
                     running = false;
                     break;
 
                 default:
-                    // 防止輸入 0~4 以外的數字
-                    System.out.println("輸入錯誤，請重新輸入有效的數字。");
+                    // Prevent inputs other than 0~4
+                    System.out.println("Invalid input. Please enter a valid number.");
             }
         }
         scanner.close();
     }
 
     private static void initializeMenu(ArrayList<MenuItem> menu) {
-        menu.add(new MenuItem("F01", "巴斯克乳酪蛋糕", 120));
-        menu.add(new MenuItem("F02", "原味可頌", 80));
-        menu.add(new MenuItem("F03", "提拉米蘇", 130));
+        menu.add(new MenuItem("F01", "Basque Cheesecake", 120));
+        menu.add(new MenuItem("F02", "Original Croissant", 80));
+        menu.add(new MenuItem("F03", "Tiramisu", 130));
 
-        // 建立飲料時，使用預設建構子
-        menu.add(new Beverage("D01", "美式咖啡", 140));
-        menu.add(new Beverage("D02", "拿鐵咖啡", 150));
-        menu.add(new Beverage("D03", "伯爵紅茶", 120));
+        // Use the default constructor when creating beverages
+        menu.add(new Beverage("D01", "Americano", 140));
+        menu.add(new Beverage("D02", "Cafe Latte", 150));
+        menu.add(new Beverage("D03", "Earl Grey Tea", 120));
     }
 
     private static void displayMenu(ArrayList<MenuItem> menu) {
-        System.out.println("\n=== 本日菜單 ===");
+        System.out.println("\n=== Today's Menu ===");
         System.out.println();
 
-        // 表格標題列
-        System.out.println("編號  品項名稱        價格     客製化選項");
-        // 呼叫 getDetails() 並輸出菜單內容
+        // Table header row
+        System.out.printf("%-5s %-20s %-7s %s%n", "ID", "Item Name", "Price", "Customization");
+        // Call getDetails() and print the menu content
         for (MenuItem item : menu) {
             System.out.println(item.getDetails());
         }
@@ -84,8 +84,8 @@ public class Main {
 
     private static void orderItem(Scanner scanner, ArrayList<MenuItem> menu, Order currentOrder) {
         displayMenu(menu);
-        System.out.print("請輸入餐點編號 (或輸入 s 返回): ");
-        String id = scanner.nextLine().toUpperCase(); // 轉大寫防呆
+        System.out.print("Enter item ID (or 's' to return): ");
+        String id = scanner.nextLine().toUpperCase(); // Convert to uppercase for error prevention
 
         if (id.equals("S")) return;
 
@@ -98,97 +98,98 @@ public class Main {
         }
 
         if (selectedItem == null) {
-            System.out.println("找不到該餐點編號！");
+            System.out.println("Item ID not found!");
             return;
         }
 
-        // 如果是飲料，必須 new 一個新的 Beverage 物件來客製化，避免改到菜單原檔
-        if (selectedItem instanceof Beverage) {
-            System.out.print("請輸入甜度 (正常糖/半糖/微糖/無糖): ");
+        // If it's a beverage, instantiate a new Beverage object for customization to avoid modifying the original menu
+        // Check if selectedItem is an instance of Beverage; if not, go to the else block
+        if (selectedItem instanceof Beverage b) {
+            System.out.print("Enter sugar level (Regular/Half/Low/None): ");
             String sugar = scanner.nextLine();
-            System.out.print("請輸入冰塊 (正常冰/少冰/微冰/去冰): ");
+            System.out.print("Enter ice level (Regular/Less/Low/None): ");
             String ice = scanner.nextLine();
 
-            Beverage customDrink = new Beverage(selectedItem.getId(), selectedItem.getName(), selectedItem.getPrice());
+            Beverage customDrink = new Beverage(b.getId(), b.getName(), b.getPrice());
             customDrink.setCustomization(sugar, ice);
             currentOrder.addItem(customDrink);
         } else {
-            // 一般餐點直接加入購物車
+            // Add regular items directly to the cart
             currentOrder.addItem(selectedItem);
         }
     }
 
     private static void cancelItem(Scanner scanner, Order currentOrder) {
         if (currentOrder.getItems().isEmpty()) {
-            System.out.println("購物車目前是空的！");
+            System.out.println("The cart is currently empty!");
             return;
         }
 
-        System.out.println("\n=== 目前購物車 ===");
+        System.out.println("\n=== Current Cart ===");
         for (int i = 0; i < currentOrder.getItems().size(); i++) {
             System.out.println((i + 1) + ". " + currentOrder.getItems().get(i).getDetails());
         }
-        System.out.print("請輸入要取消的清單序號 (或輸入 0 返回): ");
+        System.out.print("Enter the sequence number to cancel (or '0' to return): ");
 
         try {
             int index = Integer.parseInt(scanner.nextLine());
             if (index == 0) return;
-            // 陣列索引從 0 開始，所以要減 1
+            // Array index starts at 0, so subtract 1
             currentOrder.removeItem(index - 1);
         } catch (NumberFormatException e) {
-            // 捕捉使用者輸入非數字字串的例外情況
-            System.out.println("請輸入有效的數字！");
+            // Catch exceptions where the user inputs a non-numeric string
+            System.out.println("Please enter a valid number!");
         }
     }
 
     private static boolean checkout(Scanner scanner, Order currentOrder) {
         if (currentOrder.getItems().isEmpty()) {
-            System.out.println("您尚未點選任何餐點！");
+            System.out.println("You haven't ordered any items yet!");
             return false;
         }
 
         int total = currentOrder.calculateTotal();
-        System.out.println("\n========== 消費明細 ==========");
+        System.out.println("\n========== Receipt ==========");
         for (MenuItem item : currentOrder.getItems()) {
             System.out.println(item.getDetails());
         }
         System.out.println();
-        System.out.println("原始總計: $" + total);
+        System.out.println("Original Total: $" + total);
 
-        // 低消限制提醒
+        // Minimum order reminder
         if (total < 150) {
-            System.out.println("尚未達到每人低消 $150 元！");
+            System.out.println("Note: Minimum order of $150 per person has not been met!");
         }
 
-        // 滿 500 打 9 折
+        // 10% off for orders over $500
         int finalTotal = total;
         if (total >= 500) {
             finalTotal = (int) (total * 0.9);
-            System.out.println("消費滿 $500，享 9 折優惠！");
-            System.out.println("折扣後總計: $" + finalTotal);
+            System.out.println("Orders over $500 receive a 10% discount!");
+            System.out.println("Discounted Total: $" + finalTotal);
         } else {
-            System.out.println("應付總計: $" + finalTotal);
+            System.out.println("Total Due: $" + finalTotal);
         }
         System.out.println();
 
-        // 付款與找零
+        // Payment and change
         while (true) {
-            System.out.print("請輸入付款金額: $");
+            System.out.print("Enter payment amount: $");
             try {
                 int payment = Integer.parseInt(scanner.nextLine());
                 if (payment < finalTotal) {
-                    System.out.println("金額不足！還差 $" + (finalTotal - payment) + "，請重新輸入。");
+                    System.out.println("Insufficient funds! You are short by $" + (finalTotal - payment) + ". Please re-enter.");
                 } else {
                     int change = payment - finalTotal;
-                    System.out.println("\n結帳成功！");
-                    System.out.println("實收金額: $" + payment);
-                    System.out.println("找零金額: $" + change);
-                    System.out.println("品項數: " + currentOrder.getItems().size() + " 項");
-                    System.out.println("謝謝光臨，歡迎下次再來！\n");
+                    System.out.println("\nCheckout successful!");
+                    System.out.println("Amount Received: $" + payment);
+                    System.out.println("Change: $" + change);
+                    System.out.println("Number of Items: " + currentOrder.getItems().size() + " items");
+                    System.out.println("Thank you for visiting, please come again!");
                     return true;
                 }
             } catch (NumberFormatException e) {
-                System.out.println("請輸入有效的數字金額！");
+                System.out.println("Please enter a valid numeric amount!");
             }
         }
     }
