@@ -2,7 +2,7 @@ public class Beverage extends MenuItem {
     private String sugarLevel;
     private String iceLevel;
 
-    public Beverage(String id, String name, int price){
+    public Beverage(String id, String name, double price){
         super(id, name, price);
         this.sugarLevel = "Regular Sugar";
         this.iceLevel = "Regular Ice";
