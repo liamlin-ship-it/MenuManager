@@ -23,8 +23,8 @@ public class Order {
     }
 
     // Calculate the total price
-    public int calculateTotal(){
-        int total = 0;
+    public double calculateTotal(){
+        double total = 0;
         for (MenuItem item : items){
             // Retrieve the price from each MenuItem and add it to the total
             total += item.getPrice();
