@@ -14,7 +14,7 @@ public class Main {
         boolean running = true;
         while (running) {
             System.out.println("\n========== Java Cafe ==========");
-            System.out.println("Minimum order is $150 per person!");
+            System.out.println("Minimum order is $5 per person!");
             System.out.println("1. View Menu");
             System.out.println("2. Order Items");
             System.out.println("3. Cancel Items");
@@ -60,14 +60,14 @@ public class Main {
     }
 
     private static void initializeMenu(ArrayList<MenuItem> menu) {
-        menu.add(new MenuItem("F01", "Basque Cheesecake", 120));
-        menu.add(new MenuItem("F02", "Original Croissant", 80));
-        menu.add(new MenuItem("F03", "Tiramisu", 130));
+        menu.add(new MenuItem("F01", "Basque Cheesecake", 5.5));
+        menu.add(new MenuItem("F02", "Original Croissant", 3.25));
+        menu.add(new MenuItem("F03", "Tiramisu", 6));
 
         // Use the default constructor when creating beverages
-        menu.add(new Beverage("D01", "Americano", 140));
-        menu.add(new Beverage("D02", "Cafe Latte", 150));
-        menu.add(new Beverage("D03", "Earl Grey Tea", 120));
+        menu.add(new Beverage("D01", "Americano", 4.75));
+        menu.add(new Beverage("D02", "Cafe Latte", 5));
+        menu.add(new Beverage("D03", "Earl Grey Tea", 5.75));
     }
 
     private static void displayMenu(ArrayList<MenuItem> menu) {
@@ -148,7 +148,7 @@ public class Main {
             return false;
         }
 
-        int total = currentOrder.calculateTotal();
+        double total = currentOrder.calculateTotal();
         System.out.println("\n========== Receipt ==========");
         for (MenuItem item : currentOrder.getItems()) {
             System.out.println(item.getDetails());
@@ -157,15 +157,15 @@ public class Main {
         System.out.println("Original Total: $" + total);
 
         // Minimum order reminder
-        if (total < 150) {
-            System.out.println("Note: Minimum order of $150 per person has not been met!");
+        if (total < 5) {
+            System.out.println("Note: Minimum order of $5 per person has not been met!");
         }
 
-        // 10% off for orders over $500
-        int finalTotal = total;
-        if (total >= 500) {
-            finalTotal = (int) (total * 0.9);
-            System.out.println("Orders over $500 receive a 10% discount!");
+        // 10% off for orders over $20
+        double finalTotal = total;
+        if (total >= 20) {
+            finalTotal =  total * 0.9;
+            System.out.println("Orders over $20 receive a 10% discount!");
             System.out.println("Discounted Total: $" + finalTotal);
         } else {
             System.out.println("Total Due: $" + finalTotal);
@@ -176,16 +176,16 @@ public class Main {
         while (true) {
             System.out.print("Enter payment amount: $");
             try {
-                int payment = Integer.parseInt(scanner.nextLine());
+                double payment = Double.parseDouble(scanner.nextLine());
                 if (payment < finalTotal) {
-                    System.out.println("Insufficient funds! You are short by $" + (finalTotal - payment) + ". Please re-enter.");
+                    System.out.printf("Insufficient funds! You are short by $%.2f. Please re-enter.%n", (finalTotal - payment));
                 } else {
-                    int change = payment - finalTotal;
+                    double change = payment - finalTotal;
                     System.out.println("\nCheckout successful!");
                     System.out.println("Amount Received: $" + payment);
-                    System.out.println("Change: $" + change);
-                    System.out.println("Number of Items: " + currentOrder.getItems().size() + " items");
-                    System.out.println("Thank you for visiting, please come again!");
+                    System.out.printf("Change: $%.1f", change);
+                    System.out.println("\nNumber of Items: " + currentOrder.getItems().size() + " items");
+                    System.out.println("Thank you for visiting, see you next time!");
                     return true;
                 }
             } catch (NumberFormatException e) {
